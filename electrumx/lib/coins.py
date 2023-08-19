@@ -38,7 +38,7 @@ from hashlib import sha256
 from typing import Sequence, Tuple
 
 import electrumx.lib.util as util
-from electrumx.lib.hash import Base58, double_sha256, hash_to_hex_str
+from electrumx.lib.hash import Base58, double_sha256, double_sha3_256, hash_to_hex_str
 from electrumx.lib.hash import HASHX_LEN, hex_str_to_hash
 from electrumx.lib.script import (_match_ops, Script, ScriptError,
                                   ScriptPubKey, OpCodes)
@@ -4217,3 +4217,31 @@ class FerriteTestnet(Ferrite):
         'enode2.ferritecoin.org s t',
         'enode3.ferritecoin.org s t',
     ]
+
+class Kylacoin(Coin):
+    NAME = "Kylacoin"
+    SHORTNAME = "KCN"
+    NET = "mainnet"
+    VALUE_PER_COIN = 1000000000000
+    DEFAULT_MAX_SEND = 8000000
+    XPUB_VERBYTES = bytes.fromhex("038f332e")
+    XPRV_VERBYTES = bytes.fromhex("038f2ef4")
+    P2PKH_VERBYTE = bytes.fromhex("1c")
+    P2SH_VERBYTES = bytes.fromhex("1a")
+    WIF_BYTE = bytes.fromhex("41")
+    GENESIS_HASH = ('0000000091ddc5a0b9f0ed098a4db06e'
+                    'e9bc286a104f092f4fb476eb9364b7c9')
+    DESERIALIZER = lib_tx.DeserializerKylacoin
+    ESTIMATE_FEE = 0.0001
+    RELAY_FEE = 0.0001
+    TX_COUNT = 5733
+    TX_COUNT_HEIGHT = 730802
+    TX_PER_BLOCK = 50
+    RPC_PORT = 5110
+    REORG_LIMIT = 800
+    PEERS = []
+
+    @classmethod
+    def header_hash(cls, header):
+        '''Given a header return hash'''
+        return double_sha3_256(header)

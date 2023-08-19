@@ -32,6 +32,7 @@ import hmac
 from electrumx.lib.util import bytes_to_int, int_to_bytes, hex_to_bytes
 
 _sha256 = hashlib.sha256
+_sha3_256 = hashlib.sha3_256
 _new_hash = hashlib.new
 _hmac_digest = hmac.digest
 HASHX_LEN = 11
@@ -41,11 +42,17 @@ def sha256(x):
     '''Simple wrapper of hashlib sha256.'''
     return _sha256(x).digest()
 
-
 def double_sha256(x):
     '''SHA-256 of SHA-256, as used extensively in bitcoin.'''
     return sha256(sha256(x))
 
+def sha3_256(x):
+    '''Simple wrapper of hashlib sha3-256.'''
+    return _sha3_256(x).digest()
+
+def double_sha3_256(x):
+    '''SHA3-256 of SHA3-256, as used extensively in kylacoin.'''
+    return sha3_256(sha3_256(x))
 
 def hash_to_hex_str(x):
     '''Convert a big-endian binary hash to displayed hex string.

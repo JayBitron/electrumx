@@ -31,7 +31,7 @@ from dataclasses import dataclass
 from hashlib import blake2s
 from typing import Sequence
 
-from electrumx.lib.hash import sha256, double_sha256, hash_to_hex_str
+from electrumx.lib.hash import sha256, double_sha256, double_sha3_256, hash_to_hex_str
 from electrumx.lib.script import OpCodes
 from electrumx.lib.util import (
     unpack_le_int32_from, unpack_le_int64_from, unpack_le_uint16_from,
@@ -1375,3 +1375,8 @@ class DeserializerPrimecoin(Deserializer):
         header_end = self.cursor
         self.cursor = start
         return self._read_nbytes(header_end - start)
+
+
+class DeserializerKylacoin(DeserializerSegWit):
+
+    TX_HASH_FN = staticmethod(double_sha3_256)
